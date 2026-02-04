@@ -1,5 +1,5 @@
 #import "/tests/utils.typ": test
-#import "/src/lib.typ"
+#import "../lib.typ"
 
 // Test symbols
 #test({

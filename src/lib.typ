@@ -27,7 +27,7 @@
 #import "components/fuse.typ": afuse, fuse
 #import "components/supply.typ": earth, frame, ground, vcc, vee
 #import "components/inductor.typ": inductor
-#import "components/logic.typ": land, lnand, lnor, lnot, lor, lxnor, lxor
+#import "components/logic.typ": land, lnand, lnor, lnot, lor, lxnor, lxor, aand, anand, anor, anot, aor, axor, axnor, abuffer, alogic
 #import "components/resistor.typ": heater, potentiometer, resistor, rheostat
 #import "components/source.typ": acvsource, disource, dvsource, isource, vsource
 #import "components/motor.typ": acmotor, dcmotor
@@ -39,3 +39,8 @@
 #import "components/instruments/round-meter.typ": ammeter, ohmmeter, round-meter, voltmeter, wattmeter
 #import "components/button.typ": button, ncbutton, ncibutton, nobutton, noibutton
 #import "components/integrated/flipflop.typ": dflipflop, flipflop, jkflipflop, srlatch
+
+//new
+#import "components/transistors/simple.typ": nmos_simple, pmos_simple, mosfet_simple
+#import "components/integrated/multiplexer.typ": mux, mux2, mux4, mux8, dmux, dmux2, dmux4, dmux8
+

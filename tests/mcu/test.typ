@@ -1,5 +1,5 @@
 #import "/tests/utils.typ": test
-#import "/src/lib.typ"
+#import "../lib.typ"
 
 #let pins = (
     (content: "VCC", side: "west"),

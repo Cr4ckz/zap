@@ -1,1 +1,1 @@
-#import "/src/lib.typ": *
+#import "../lib.typ": *
