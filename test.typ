@@ -12,13 +12,18 @@
   abuffer("l3", (8, -2))
   axnor("l4", (10, -4))
   alogic("l5", (12, 0),type: "xnor", inputs: 3)
+  reg8bit("ff",(2,-10))
 
   zwire("l1.out", "l5.in1")
   zwire("l3.out", "l5.in2")
   zwire("l4.out", "l5.in3")
   
-
+  decoder4("dec", (5,5))
   mux8("mux", (5, -10))
-  zwire("t2.d", "mux.in010")
+  swire("t1.d", "ff.clk")
+ 
+
+
+ 
 })
 

@@ -1,6 +1,6 @@
 #import "../../component.typ": component, interface
 #import "../../dependencies.typ": cetz
-#import cetz.draw: anchor, content, line, polygon, rect, scope, translate, set-style, merge-path
+#import cetz.draw: anchor, content, line, polygon, rect, scope, translate, set-style
 
 #let mux(name, node, inputs: 2, ..params) = {
   assert(inputs >= 2, message: "A multiplexer needs at least 2 inputs!")
@@ -49,7 +49,7 @@
       }
 
       //input labels
-      content((-w/2 + 0.4, y-pos), text(1.2em, weight: "bold")[#bin-val])
+      content((-w/2 + 0.45, y-pos), text(1.2em, weight: "bold")[#bin-val])
     }
 
     //sets the selectors

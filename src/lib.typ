@@ -43,4 +43,8 @@
 //new
 #import "components/transistors/simple.typ": nmos_simple, pmos_simple, mosfet_simple
 #import "components/integrated/multiplexer.typ": mux, mux2, mux4, mux8, dmux, dmux2, dmux4, dmux8
+#import "components/integrated/decoder.typ": decoder, decoder2, decoder4, decoder8
+#import "components/integrated/flipflop_top.typ": flipflop_top, dflipflop_top, dlatch_top, dff_enable, dff_reset, dff_enable_inv, dff_reset_inv
+
+#import "components/integrated/register.typ": register, reg2bit, reg3bit, reg4bit, reg5bit, reg6bit, reg7bit, reg8bit
 
