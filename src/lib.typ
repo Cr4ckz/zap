@@ -48,4 +48,5 @@
 #import "components/integrated/register.typ": register, reg2bit, reg3bit, reg4bit, reg5bit, reg6bit, reg7bit, reg8bit
 #import "components/integrated/adder.typ": full_adder, half_adder
 #import "components/integrated/zero_extend.typ": zero_extend, sign_extend
+#import "components/integrated/shifter.typ": shifter
 
