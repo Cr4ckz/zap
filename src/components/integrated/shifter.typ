@@ -5,43 +5,33 @@
 /// Barrel Shifter component (Parallelogram shape).
 /// - name (string): Unique identifier.
 /// - node (coordinate): Position in the CeTZ canvas.
-/// - label (string): The shift symbol (default: ">>>" for logical right shift).
+/// - label (string): The shift symbol
 /// - angle (angle): Rotation of the component.
 /// *Anchors:* `in` (left), `out` (right), `shamt` (top).
 #let shifter(name, node, label: ">>>", angle: 0deg, ..params) = {
   let draw(ctx, position, style) = {
-    let w = style.at("width", default: 1.2)
-    let h = style.at("height", default: 0.8)
-    let slant = w * 0.2
-
-    interface((-w/2 - slant, -h/2), (w/2 + slant, h/2), io: false)
+    let w = style.width
+    let h = style.height
+     interface((-w/2, -h), (w/2, h), io: false)
     
+    let is_left = label.contains("<")
+    let slant = (w * 0.15) * (if is_left { -1 } else { 1 })
+
     set-style(stroke: ctx.style.stroke)
     
     cetz.draw.rotate(angle)
 
-    if(label.contains(">")){
-      merge-path(fill: white, close: true, {
-      line((-w/2 + slant, h/2), (w/2 + slant, h/2))
-      line((w/2 + slant, h/2), (w/2 - slant, -h/2))
-      line((w/2 - slant, -h/2), (-w/2 - slant, -h/2))
-      line((-w/2 - slant, -h/2), (-w/2 + slant, h/2))
-    })
-    }else{
-      cetz.draw.rotate(180deg)
-      merge-path(fill: white, close: true, {
-      line((-w/2 + slant, h/2), (w/2 + slant, h/2))
-      line((w/2 + slant, h/2), (w/2 - slant, -h/2))
-      line((w/2 - slant, -h/2), (-w/2 - slant, -h/2))
-      line((-w/2 - slant, -h/2), (-w/2 + slant, h/2))
-    })
-    cetz.draw.rotate(180deg)
-    }
-    
 
+    merge-path(fill: white, close: true, {
+      line((-w/2 + slant,  h/2), ( w/2 + slant,  h/2))
+      line(( w/2 + slant,  h/2), ( w/2 - slant, -h/2))
+      line(( w/2 - slant, -h/2), (-w/2 - slant, -h/2))
+      line((-w/2 - slant, -h/2), (-w/2 + slant,  h/2))
+    })
 
     content((0, 0), text(style.at("textsize", default: 1.0em), weight: "bold")[#label])
 
+    // Anker berechnet basierend auf dem dynamischen Slant
     anchor("in",    (-w/2, 0))
     anchor("out",   (w/2, 0))
     anchor("shamt", (0, h/2))
@@ -54,3 +44,31 @@
 
   component("shifter", name, node, draw: draw, ..params)
 }
+
+/// Left logical shifter
+/// - name (string): Unique identifier.
+/// - node (coordinate): Position in the CeTZ canvas.
+/// - angle (angle): Rotation of the component.
+/// *Anchors:* `in` (left), `out` (right), `shamt` (top).
+#let shiftll(name, node, ..params) = shifter(name, node, label: "<<", ..params)
+
+/// Left arithmetical shifter
+/// - name (string): Unique identifier.
+/// - node (coordinate): Position in the CeTZ canvas.
+/// - angle (angle): Rotation of the component.
+/// *Anchors:* `in` (left), `out` (right), `shamt` (top).
+#let shiftla(name, node, ..params) = shifter(name, node, label: "<<<", ..params)
+
+/// right logical shifter
+/// - name (string): Unique identifier.
+/// - node (coordinate): Position in the CeTZ canvas.
+/// - angle (angle): Rotation of the component.
+/// *Anchors:* `in` (left), `out` (right), `shamt` (top).
+#let shiftrl(name, node, ..params) = shifter(name, node, label: ">>", ..params)
+
+/// right arithmetical shifter
+/// - name (string): Unique identifier.
+/// - node (coordinate): Position in the CeTZ canvas.
+/// - angle (angle): Rotation of the component.
+/// *Anchors:* `in` (left), `out` (right), `shamt` (top).
+#let shiftra(name, node, ..params) = shifter(name, node, label: ">>>", ..params)

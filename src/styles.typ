@@ -512,4 +512,15 @@
         spacing: 0.5,
         textsize: 1em,
     ),
+    shifter: (
+        variant: auto,
+        scale: auto,
+        stroke: auto,
+        fill: auto,
+        width: 1,
+        height: 0.8,
+        padding: 0.2,
+        spacing: 0.5,
+        textsize: 1em,
+    ),
 )
