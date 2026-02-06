@@ -1,6 +1,6 @@
 #import "../dependencies.typ": cetz
 #import "../utils.typ": get-style, opposite-anchor, resolve-style
-#import cetz.draw: anchor, circle, content, group, hide, line, mark, set-style
+#import cetz.draw: anchor, circle, content, group, hide, line, mark, set-style, set-origin
 #import cetz.styles: merge
 
 #let ra = ratio
@@ -16,6 +16,7 @@
         let (ctx, ..points) = cetz.coordinate.resolve(ctx, ..params.pos())
 
         set-style(stroke: style.stroke)
+        let final-points = ()
 
         // Drawing the wire using the shape parameter
         anchor("in", points.first())
@@ -24,6 +25,7 @@
             anchor("p" + str(index), point)
         }
         if shape == "direct" {
+            final-points = points
             line(..points, name: "line")
         } else if shape == "zigzag" {
             if points.len() < 2 { return }
@@ -44,14 +46,41 @@
 
                 generated-points = (..generated-points, p1, p-mid1, p-mid2)
             }
-
+            final-points = (..generated-points, points.last())
             line(..generated-points, points.last(), name: "line")
         }
+        for (index, point) in final-points.enumerate() {
+            anchor("p" + str(index), point)
+        }
 
-        // TODO Multi-bits wiring by displaying a slash with a number
-        for i in range(bits) {
-            let delta = i * 0.4
-            wire((rel: (0, -0.2), to: "line.50%"), (rel: (0, 0.2), to: "line.50%"))
+    // Multi-bits wiring with markers
+        if bits != 0 {
+            let dist = 0.25 
+            let n = final-points.len()
+            
+            let marker-configs = (
+                (s: "p0", e: "p1", name: "start"),
+                (s: "p" + str(n - 1), e: "p" + str(n - 2), name: "end")
+            )
+
+            for m in marker-configs {
+                group(name: "bus-marker-" + m.name, {
+                    set-origin((m.s, dist, m.e))
+                    cetz.draw.get-ctx(ctx => {
+                        let (ctx, p-s) = cetz.coordinate.resolve(ctx, m.s)
+                        let (ctx, p-e) = cetz.coordinate.resolve(ctx, m.e)
+                        let angle = cetz.vector.angle2(p-s, p-e)
+                        
+                        cetz.draw.rotate(angle + 30deg)
+                        line((0, -0.15), (0, 0.15), stroke: style.stroke)
+                        
+                        let display = if type(bits) == int { [#bits] } else { bits }
+                        if type(bits) != int or bits > 1 {
+                            content((0.15, 0.05), text(0.6em, weight: "bold", display), anchor: "west")
+                        }
+                    })
+                })
+            }
         }
 
         // Current decoration

@@ -490,4 +490,15 @@
         padding: 0.2,
         spacing: 0.5,
     ),
+     adder: (
+        variant: auto,
+        scale: auto,
+        stroke: auto,
+        fill: auto,
+        width: 2,
+        height: 1,
+        padding: 0.2,
+        spacing: 0.5,
+        textsize: 1em,
+    ),
 )

@@ -3,6 +3,18 @@
 #import "../../mini.typ": clock-wedge
 #import cetz.draw: anchor, content, line, polygon, rect, scope, translate
 
+/// A flexible n-bit Register component with clock and reset support.
+///
+/// - name (string): Unique identifier for the component.
+/// - node (coordinate): Position in the CeTZ canvas.
+/// - bits (int): Number of bits (default: 2). Controls the number of S/S' pins.
+/// - ..params (any): Additional style and component parameters.
+///
+/// *Anchors:*
+/// - `clk`: Clock input (top center, marked with a triangle).
+/// - `rst`: Reset input (bottom center).
+/// - `s{n}_in`: Input pin for bit {n} (left side).
+/// - `s{n}_out`: Output pin for bit {n} (right side).
 #let register(name, node, bits: 2, ..params) = {
     let draw(ctx, position, style) = {
         let w = style.width * 0.8
@@ -46,10 +58,49 @@
     component("register", name, node, draw: draw, ..params)
 }
 
+Ja, das ist ein sehr sauberer Stil. Wir ergänzen noch die Parameter - name und - node, damit Tinymist dir beim Tippen direkt sagt, welche Argumente die Funktion erwartet.
+
+Hier sind die Dokumentationen für die restlichen Register-Varianten in diesem kompakten Format:
+
+Code-Snippet
+/// 2-bit version of the register component.
+/// - name (string): Unique identifier for the component.
+/// - node (coordinate): Position in the CeTZ canvas.
+/// *Anchors:* `s0_in` to `s1_in`, `s0_out` to `s1_out`, `clk`, `rst`.
 #let reg2bit(name, node, ..params) = register(name, node, bits: 2, ..params)
+
+/// 3-bit version of the register component.
+/// - name (string): Unique identifier for the component.
+/// - node (coordinate): Position in the CeTZ canvas.
+/// *Anchors:* `s0_in` to `s2_in`, `s0_out` to `s2_out`, `clk`, `rst`.
 #let reg3bit(name, node, ..params) = register(name, node, bits: 3, ..params)
+
+/// 4-bit version of the register component.
+/// - name (string): Unique identifier for the component.
+/// - node (coordinate): Position in the CeTZ canvas.
+/// *Anchors:* `s0_in` to `s3_in`, `s0_out` to `s3_out`, `clk`, `rst`.
 #let reg4bit(name, node, ..params) = register(name, node, bits: 4, ..params)
+
+/// 5-bit version of the register component.
+/// - name (string): Unique identifier for the component.
+/// - node (coordinate): Position in the CeTZ canvas.
+/// *Anchors:* `s0_in` to `s4_in`, `s0_out` to `s4_out`, `clk`, `rst`.
 #let reg5bit(name, node, ..params) = register(name, node, bits: 5, ..params)
+
+/// 6-bit version of the register component.
+/// - name (string): Unique identifier for the component.
+/// - node (coordinate): Position in the CeTZ canvas.
+/// *Anchors:* `s0_in` to `s5_in`, `s0_out` to `s5_out`, `clk`, `rst`.
 #let reg6bit(name, node, ..params) = register(name, node, bits: 6, ..params)
+
+/// 7-bit version of the register component.
+/// - name (string): Unique identifier for the component.
+/// - node (coordinate): Position in the CeTZ canvas.
+/// *Anchors:* `s0_in` to `s6_in`, `s0_out` to `s6_out`, `clk`, `rst`.
 #let reg7bit(name, node, ..params) = register(name, node, bits: 7, ..params)
+
+/// 8-bit version of the register component.
+/// - name (string): Unique identifier for the component.
+/// - node (coordinate): Position in the CeTZ canvas.
+/// *Anchors:* `s0_in` to `s7_in`, `s0_out` to `s7_out`, `clk`, `rst`.
 #let reg8bit(name, node, ..params) = register(name, node, bits: 8, ..params)

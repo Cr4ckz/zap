@@ -30,6 +30,13 @@
     component("logic", name, node, draw: draw, ..params)
 }
 
+/// American (MIL-STD) logic gate component with dynamic input scaling.
+/// - name (string): Unique identifier for the component.
+/// - node (coordinate): Position in the CeTZ canvas.
+/// - type (string): Gate logic type ("and", "nand", "or", "nor", "xor", "xnor", "not", "buffer").
+/// - inputs (int): Number of input pins (ignored for NOT and Buffer).
+/// *Anchors:* /// - `in1` to `in{n}`: Input pins (left).
+/// - `out`: Output pin (right).
 #let logic_american(name, node, type: "and", inputs: 2, ..params) = {
   let draw(ctx, position, style) = {
     let is-negated = type in ("nand", "nor", "not", "xnor")
@@ -106,14 +113,65 @@
 #let lxor(name, node, ..params) = logic(name, node, ..params, text: $=1$)
 #let lxnor(name, node, ..params) = logic(name, node, ..params, text: $=1$, invert: true)
 
-
+/// American NOT Gate (Inverter).
+/// - name (string): Unique identifier for the component.
+/// - node (coordinate): Position in the CeTZ canvas.
+/// *Anchors:* `in1`, `out`.
 #let anot(name, node, ..params) = logic_american(name, node, type: "not", inputs: 1, ..params)
+
+/// American AND Gate.
+/// - name (string): Unique identifier for the component.
+/// - node (coordinate): Position in the CeTZ canvas.
+/// - inputs (int): Number of input pins
+/// *Anchors:* `in1` to `in{n}`, `out`.
 #let aand(name, node, inputs: 2, ..params) = logic_american(name, node, type: "and", inputs: inputs, ..params)
+
+/// American NAND Gate with inversion bubble.
+/// - name (string): Unique identifier for the component.
+/// - node (coordinate): Position in the CeTZ canvas.
+/// - inputs (int): Number of input pins
+/// *Anchors:* `in1` to `in{n}`, `out`.
 #let anand(name, node, inputs: 2, ..params) = logic_american(name, node, type: "nand", inputs: inputs, ..params)
+
+/// American OR Gate with curved input and pointed output.
+/// - name (string): Unique identifier for the component.
+/// - node (coordinate): Position in the CeTZ canvas.
+/// - inputs (int): Number of input pins
+/// *Anchors:* `in1` to `in{n}`, `out`.
 #let aor(name, node, inputs: 2, ..params) = logic_american(name, node, type: "or", inputs: inputs, ..params)
+
+/// American NOR Gate.
+/// - name (string): Unique identifier for the component.
+/// - node (coordinate): Position in the CeTZ canvas.
+/// - inputs (int): Number of input pins
+/// *Anchors:* `in1` to `in{n}`, `out`.
 #let anor(name, node, inputs: 2, ..params) = logic_american(name, node, type: "nor", inputs: inputs, ..params)
+
+/// American NOR Gate.
+/// - name (string): Unique identifier for the component.
+/// - node (coordinate): Position in the CeTZ canvas.
+/// - inputs (int): Number of input pins
+/// *Anchors:* `in1` to `in{n}`, `out`.
 #let axor(name, node, inputs: 2, ..params) = logic_american(name, node, type: "xor", inputs: inputs, ..params)
+
+/// American XNOR Gate.
+/// - name (string): Unique identifier for the component.
+/// - node (coordinate): Position in the CeTZ canvas.
+/// - inputs (int): Number of input pins
+/// *Anchors:* `in1` to `in{n}`, `out`.
 #let axnor(name, node, inputs: 2, ..params) = logic_american(name, node, type: "xnor", inputs: inputs, ..params)
+
+/// American BUFFER Gate.
+/// - name (string): Unique identifier for the component.
+/// - node (coordinate): Position in the CeTZ canvas.
+/// *Anchors:* `in1`, `out`.
 #let abuffer(name, node, ..params) = logic_american(name, node, type: "buffer", inputs: 1, ..params)
 
+/// American (MIL-STD) logic gate component with dynamic input scaling.
+/// - name (string): Unique identifier for the component.
+/// - node (coordinate): Position in the CeTZ canvas.
+/// - type (string): Gate logic type ("and", "nand", "or", "nor", "xor", "xnor", "not", "buffer").
+/// - inputs (int): Number of input pins (ignored for NOT and Buffer).
+/// *Anchors:* /// - `in1` to `in{n}`: Input pins (left).
+/// - `out`: Output pin (right).
 #let alogic(name: none, node: (0,0), type: "and", inputs: 2, ..params) = logic_american(name: name, node: node, type: type, inputs: inputs, ..params)

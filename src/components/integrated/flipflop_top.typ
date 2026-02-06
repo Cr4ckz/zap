@@ -3,22 +3,39 @@
 #import "../../mini.typ": clock-wedge
 #import cetz.draw: anchor, content, line, polygon, rect, scope, translate
 
+/// Generic Flip-Flop/Latch base component.
+/// - name (string): Unique identifier.
+/// - node (coordinate): Position in the CeTZ canvas.
+/// - pins (dictionary): Pin configuration (content, clock wedge, etc.).
+/// *Physical Anchors:*
+/// -  `pin1`-`pin3` (Left)
+/// - `pin4`-`pin6` (Right)
+/// - `pinup` (Top)
+/// - `pindown` (Bottom).
 #let flipflop_top(name, node, pins: (:), ..params) = {
     assert(params.pos().len() == 0, message: "flipflop_top supports only one node")
     assert(type(pins) == dictionary, message: "pins should be a dictionary")
     
-    let draw(ctx, position, style) = {
-        interface((-style.width / 2, -style.height / 2), (style.width / 2, style.height / 2))
-
+   let draw(ctx, position, style) = {
         for i in range(1, 4) {
             anchor("pin" + str(i), (-style.width / 2, style.height / 2 - i * style.spacing))
         }
         for i in range(4, 7) {
             anchor("pin" + str(i), (style.width / 2, -style.height / 2 + (i - 3) * style.spacing))
         }
-
         anchor("pinup", (0, style.height / 2))
         anchor("pindown", (0, -style.height / 2))
+
+        for (key, pin) in pins {
+            let label = pin.at("content", default: "")
+            
+            if label == "D" { anchor("d", key) }
+            if label == "Q" { anchor("q", key) }
+            if label == overline("Q") or label == "Q-not" { anchor("q_n", key) }
+            if label == "Reset" or label == overline("Reset") { anchor("rst", key) }
+            if label == "Enable" or label == overline("Enable") { anchor("en", key) }
+            if label == "CLK" or pin.at("clock", default: false) { anchor("clk", key) }
+        }
 
         rect((-style.width / 2, -style.height / 2), (style.width / 2, style.height / 2), fill: style.fill, stroke: style.stroke)
 
@@ -45,6 +62,10 @@
     component("flipflop_top", name, node, draw: draw, ..params)
 }
 
+/// D-Latch (Level-sensitive).
+/// - name (string): Unique identifier.
+/// - node (coordinate): Position.
+/// *Anchors:* `d` (Data), `clk` (Control), `q` (Output), `q_n` (Inverted Output).
 #let dlatch_top(name, node, ..params) = flipflop_top(
     name,
     node,
@@ -57,6 +78,10 @@
     ),
 )
 
+/// D-Flip-Flop (Edge-triggered).
+/// - name (string): Unique identifier.
+/// - node (coordinate): Position.
+/// *Anchors:* `d` (Data), `clk` (Clock wedge), `q` (Output), `q_n` (Inverted Output).
 #let dflipflop_top(name, node, ..params) = flipflop_top(
     name,
     node,
@@ -69,6 +94,10 @@
     ),
 )
 
+/// D-Flip-Flop with asynchronous Reset.
+/// - name (string): Unique identifier.
+/// - node (coordinate): Position.
+/// *Anchors:* `d`, `clk`, `rst` (Reset bottom), `q`, `q_n`.
 #let dff_reset(name, node, ..params) = flipflop_top(
     name,
     node,
@@ -82,6 +111,10 @@
     ),
 )
 
+/// D-Flip-Flop with active-low Reset.
+/// - name (string): Unique identifier.
+/// - node (coordinate): Position.
+/// *Anchors:* `d`, `clk`, `rst` (Reset-not bottom), `q`, `q_n`.
 #let dff_reset_inv(name, node, ..params) = flipflop_top(
     name,
     node,
@@ -95,6 +128,10 @@
     ),
 )
 
+/// D-Flip-Flop with Enable signal.
+/// - name (string): Unique identifier.
+/// - node (coordinate): Position.
+/// *Anchors:* `d`, `clk`, `en` (Enable bottom), `q`, `q_n`.
 #let dff_enable(name, node, ..params) = flipflop_top(
     name,
     node,
@@ -108,6 +145,10 @@
     ),
 )
 
+/// D-Flip-Flop with active-low Enable.
+/// - name (string): Unique identifier.
+/// - node (coordinate): Position.
+/// *Anchors:* `d`, `clk`, `en` (Enable-not bottom), `q`, `q_n`.
 #let dff_enable_inv(name, node, ..params) = flipflop_top(
     name,
     node,

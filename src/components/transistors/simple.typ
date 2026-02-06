@@ -3,6 +3,14 @@
 #import "../../components/wire.typ": wire
 #import cetz.draw: anchor, circle, content, floating, hide, line, mark, scale, set-origin, set-style, translate
 
+
+/// Simplified MOSFET base component (CMOS logic style).
+/// - name (string): Unique identifier for the component.
+/// - node (coordinate): Position in the CeTZ canvas.
+/// - channel (string): Either "n" or "p". "p" adds a circle at the gate.
+/// *Anchors:* /// - `g`: Gate input (left).
+/// - `d`: Drain (top right).
+/// - `s`: Source (bottom right).
 #let mosfet_simple(
   name,
   node,
@@ -48,6 +56,14 @@
   component("mosfet", name, node, draw: draw, ..params)
 }
 
+/// Simple N-channel MOSFET.
+/// - name (string): Unique identifier.
+/// - node (coordinate): Position.
+/// *Anchors:* `g` (Gate), `d` (Drain), `s` (Source)
 #let pmos_simple(name, node, ..params) = mosfet_simple(name, node, channel: "p", ..params)
+
+/// Simple P-channel MOSFET with inversion circle.
+/// - name (string): Unique identifier.
+/// - node (coordinate): Position.
+/// *Anchors:* `g` (Gate), `d` (Drain), `s` (Source).
 #let nmos_simple(name, node, ..params) = mosfet_simple(name, node, channel: "n", ..params)
-  
