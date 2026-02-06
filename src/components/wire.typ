@@ -54,6 +54,7 @@
         }
 
     // Multi-bits wiring
+    //TODO: fix missing bottom marker
         if bits != 0 and final-points.len() >= 2 {
             let n = final-points.len()
             let default-dist = 0.3 
