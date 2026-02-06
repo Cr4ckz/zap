@@ -53,10 +53,10 @@
             anchor("p" + str(index), point)
         }
 
-    // Multi-bits wiring with markers
-        if bits != 0 {
-            let dist = 0.25 
+    // Multi-bits wiring
+        if bits != 0 and final-points.len() >= 2 {
             let n = final-points.len()
+            let default-dist = 0.3 
             
             let marker-configs = (
                 (s: "p0", e: "p1", name: "start"),
@@ -65,18 +65,30 @@
 
             for m in marker-configs {
                 group(name: "bus-marker-" + m.name, {
-                    set-origin((m.s, dist, m.e))
                     cetz.draw.get-ctx(ctx => {
                         let (ctx, p-s) = cetz.coordinate.resolve(ctx, m.s)
                         let (ctx, p-e) = cetz.coordinate.resolve(ctx, m.e)
+                        
+                        let len = cetz.vector.dist(p-s, p-e)
+                        
+                        let actual-dist = calc.min(default-dist, len * 0.4)
+                        
+                        set-origin((m.s, actual-dist, m.e))
+                        
                         let angle = cetz.vector.angle2(p-s, p-e)
                         
-                        cetz.draw.rotate(angle + 30deg)
-                        line((0, -0.15), (0, 0.15), stroke: style.stroke)
+                        group({
+                          cetz.draw.rotate(angle + 30deg)
+                          line((0, -0.15), (0, 0.15), stroke: style.stroke)
+                        })
                         
                         let display = if type(bits) == int { [#bits] } else { bits }
                         if type(bits) != int or bits > 1 {
-                            content((0.15, 0.05), text(0.6em, weight: "bold", display), anchor: "west")
+                            content(
+                                (0, -0.175), 
+                                text(0.7em, weight: "bold", display), 
+                                anchor: "north"
+                            )
                         }
                     })
                 })
