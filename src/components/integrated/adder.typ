@@ -46,8 +46,8 @@
       if mode == "full" {
         content((w/2 + 0.65, 0.2), text(style.textsize , weight: "bold")[#$C_(i n)$], anchor: "east")
       }
-      content((rel: (-0.2, 0.25), to: "a"), text(style.textsize, weight: "bold")[$A$])
-      content((rel: (+0.2, 0.25), to: "b"), text(style.textsize, weight: "bold")[$B$])
+      content((rel: (0, -0.25), to: "a"), text(style.textsize, weight: "bold")[$A$])
+      content((rel: (0, -0.25), to: "b"), text(style.textsize, weight: "bold")[$B$])
       content((rel: (-0.2, -0.25), to: "s"), text(style.textsize, weight: "bold")[$S$])
       content((-w/2 - 0.7, 0.2), text(style.textsize, weight: "bold")[#$C_(o u t)$], anchor: "west")
     }
