@@ -16,7 +16,11 @@
     assert(params.pos().len() == 0, message: "flipflop_top supports only one node")
     assert(type(pins) == dictionary, message: "pins should be a dictionary")
     
+    
    let draw(ctx, position, style) = {
+    let w = style.width
+    let h = style.height
+    interface((-w / 2, -h / 2), (w / 2, h / 2), io: false)
         for i in range(1, 4) {
             anchor("pin" + str(i), (-style.width / 2, style.height / 2 - i * style.spacing))
         }

@@ -58,11 +58,6 @@
     component("register", name, node, draw: draw, ..params)
 }
 
-Ja, das ist ein sehr sauberer Stil. Wir ergänzen noch die Parameter - name und - node, damit Tinymist dir beim Tippen direkt sagt, welche Argumente die Funktion erwartet.
-
-Hier sind die Dokumentationen für die restlichen Register-Varianten in diesem kompakten Format:
-
-Code-Snippet
 /// 2-bit version of the register component.
 /// - name (string): Unique identifier for the component.
 /// - node (coordinate): Position in the CeTZ canvas.
