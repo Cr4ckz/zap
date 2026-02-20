@@ -8,32 +8,30 @@
 /// - label (string): The shift symbol
 /// *Anchors:* `in` (left), `out` (right), `shamt` (top).
 #let shifter(name, node, label: ">>>", ..params) = {
-  let draw(ctx, position, style) = {
-    let w = style.width
-    let h = style.height
-    interface((-w/2, -h/2), (w/2, h/2), io: false)
-    set-style(stroke: ctx.style.stroke)
-    
-    let is_left = label.contains("<")
-    let slant = (w * 0.15) * (if is_left { -1 } else { 1 })
+    let draw(ctx, position, style) = {
+        let w = style.width
+        let h = style.height
+        interface((-w / 2, -h / 2), (w / 2, h / 2), io: false)
+        set-style(stroke: ctx.style.stroke)
 
-    line((-w/2 + slant,  h/2), ( w/2 + slant,  h/2), 
-         ( w/2 - slant, -h/2), (-w/2 - slant, -h/2), 
-         close: true, fill: style.fill)
+        let is_left = label.contains("<")
+        let slant = (w * 0.15) * (if is_left { -1 } else { 1 })
 
-    content((0, 0), text(style.textsize, weight: "bold")[#label])
+        line((-w / 2 + slant, h / 2), (w / 2 + slant, h / 2), (w / 2 - slant, -h / 2), (-w / 2 - slant, -h / 2), close: true, fill: style.fill)
 
-    anchor("in",    (-w/2, 0))
-    anchor("out",   (w/2, 0))
-    anchor("shamt", (0, h/2))
-    
-    anchor("nw", (-w/2 + slant,  h/2))
-    anchor("ne", ( w/2 + slant,  h/2))
-    anchor("sw", (-w/2 - slant, -h/2))
-    anchor("se", ( w/2 - slant, -h/2))
-  }
+        content((0, 0), text(style.textsize, weight: "bold")[#label])
 
-  component("shifter", name, node, draw: draw, ..params)
+        anchor("in", (-w / 2, 0))
+        anchor("out", (w / 2, 0))
+        anchor("shamt", (0, h / 2))
+
+        anchor("nw", (-w / 2 + slant, h / 2))
+        anchor("ne", (w / 2 + slant, h / 2))
+        anchor("sw", (-w / 2 - slant, -h / 2))
+        anchor("se", (w / 2 - slant, -h / 2))
+    }
+
+    component("shifter", name, node, draw: draw, ..params)
 }
 
 /// Left logical shifter

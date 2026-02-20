@@ -5,7 +5,7 @@
 #import "../components/wire.typ": wire
 #import cetz.draw: anchor, circle, content, line, mark, polygon, rect, set-style
 
-#let stub(name: "l",node, dir: "north", ..params) = {
+#let stub(name: "l", node, dir: "north", ..params) = {
     assert(params.pos().len() == 0, message: "stub must have exactly one node")
 
     let args = params.named()
@@ -35,7 +35,6 @@
 
         wire((0, 0), (rel: diff))
     }
-
 
     // Component call
     component("stub", name, node, draw: draw, ..args)

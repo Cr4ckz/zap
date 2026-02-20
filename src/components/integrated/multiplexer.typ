@@ -12,64 +12,64 @@
 /// - `sel0` to `sel{log2(n)-1}`: Selection pins (top).
 /// - `out`: Single data output (right).
 #let mux(name, node, inputs: 2, ..params) = {
-  assert(inputs >= 2, message: "A multiplexer needs at least 2 inputs!")
-  let draw(ctx, position, style) = {
-    let spacing = style.spacing
-    let bit-width = int(calc.ceil(calc.log(inputs, base: 2)))
+    assert(inputs >= 2, message: "A multiplexer needs at least 2 inputs!")
+    let draw(ctx, position, style) = {
+        let spacing = style.spacing
+        let bit-width = int(calc.ceil(calc.log(inputs, base: 2)))
 
-    //dynamic dimensions
-    let h_total = calc.max(style.min-height, (inputs - 1) * spacing + 6 * style.padding)
-    let h = h_total / 2
+        //dynamic dimensions
+        let h_total = calc.max(style.min-height, (inputs - 1) * spacing + 6 * style.padding)
+        let h = h_total / 2
 
-    let w = style.width + (bit-width * 0.1)
-    let slope = h * 0.4
+        let w = style.width + (bit-width * 0.1)
+        let slope = h * 0.4
 
-    interface((-w / 2, -h), (w / 2, h), io: false)
-    line((-w / 2, -h), (w / 2, h), stroke: none, name: "bounds")
+        interface((-w / 2, -h), (w / 2, h), io: false)
+        line((-w / 2, -h), (w / 2, h), stroke: none, name: "bounds")
 
-    set-style(stroke: ctx.style.stroke)
+        set-style(stroke: ctx.style.stroke)
 
-    // body
-    line((-w / 2, h), (w / 2, h - slope), (w / 2, -h + slope), (-w / 2, -h), close: true, fill: style.fill)
+        // body
+        line((-w / 2, h), (w / 2, h - slope), (w / 2, -h + slope), (-w / 2, -h), close: true, fill: style.fill)
 
-    // inputs
-    let spread = (inputs - 1) * spacing
-    for i in range(0, inputs) {
-      let y-pos = (spread / 2) - (i * spacing)
-      anchor("in" + str(i), (-w / 2, y-pos))
-      let bin-val = ""
-      let temp-i = i
-      for _ in range(bit-width) {
-        bin-val = str(calc.rem(temp-i, 2)) + bin-val
-        temp-i = calc.floor(temp-i / 2)
-      }
+        // inputs
+        let spread = (inputs - 1) * spacing
+        for i in range(0, inputs) {
+            let y-pos = (spread / 2) - (i * spacing)
+            anchor("in" + str(i), (-w / 2, y-pos))
+            let bin-val = ""
+            let temp-i = i
+            for _ in range(bit-width) {
+                bin-val = str(calc.rem(temp-i, 2)) + bin-val
+                temp-i = calc.floor(temp-i / 2)
+            }
 
-      anchor("in" + bin-val, (-w / 2, y-pos))
+            anchor("in" + bin-val, (-w / 2, y-pos))
 
-      let bin-val = ""
-      let temp-i = i
-      for _ in range(bit-width) {
-        bin-val = str(calc.rem(temp-i, 2)) + bin-val
-        temp-i = calc.floor(temp-i / 2)
-      }
+            let bin-val = ""
+            let temp-i = i
+            for _ in range(bit-width) {
+                bin-val = str(calc.rem(temp-i, 2)) + bin-val
+                temp-i = calc.floor(temp-i / 2)
+            }
 
-      content((-w / 2 + 0.45, y-pos), text(style.textsize, weight: "bold")[#bin-val])
+            content((-w / 2 + 0.45, y-pos), text(style.textsize, weight: "bold")[#bin-val])
+        }
+
+        //sets the selectors
+        for i in range(0, bit-width) {
+            let x-pos = (w / 2) - (i + 1) * (w / (bit-width + 1))
+            let y-pos = (-slope / w) * x-pos + (h - slope / 2)
+            let s-idx = bit-width - 1 - i
+
+            anchor("sel" + str(s-idx), (x-pos, y-pos))
+            content((x-pos - 0.25, y-pos + 0.4), text(style.textsize * 0.8)[$S_#s-idx$])
+        }
+
+        anchor("out", (w / 2, 0))
     }
 
-    //sets the selectors
-    for i in range(0, bit-width) {
-      let x-pos = (w / 2) - (i + 1) * (w / (bit-width + 1))
-      let y-pos = (-slope / w) * x-pos + (h - slope / 2)
-      let s-idx = bit-width - 1 - i
-
-      anchor("sel" + str(s-idx), (x-pos, y-pos))
-      content((x-pos - 0.25, y-pos + 0.4), text(style.textsize * 0.8)[$S_#s-idx$])
-    }
-
-    anchor("out", (w / 2, 0))
-  }
-
-  component("mux", name, node, draw: draw, ..params)
+    component("mux", name, node, draw: draw, ..params)
 }
 
 /// Demultiplexer component that routes one input to one of n outputs.
@@ -81,53 +81,51 @@
 /// - `out0` to `out{n-1}`: Data outputs (indexed 1 to n).
 /// - `out{binary}`: Data outputs (e.g., `out00`, `out01`).
 #let dmux(name, node, outputs: 2, ..params) = {
-  assert(outputs >= 2, message: "A demultiplexer needs at least 2 outputs.")
+    assert(outputs >= 2, message: "A demultiplexer needs at least 2 outputs.")
 
-  let draw(ctx, position, style) = {
-    let spacing = style.spacing
-    let bit-width = int(calc.ceil(calc.log(outputs, base: 2)))
+    let draw(ctx, position, style) = {
+        let spacing = style.spacing
+        let bit-width = int(calc.ceil(calc.log(outputs, base: 2)))
 
-    let h_total = calc.max(style.min-height, (outputs - 1) * spacing + 6 * style.padding)
-    let h = h_total / 2
-    let w = style.width + (bit-width * 0.4)
-    let slope = h * 0.4
+        let h_total = calc.max(style.min-height, (outputs - 1) * spacing + 6 * style.padding)
+        let h = h_total / 2
+        let w = style.width + (bit-width * 0.4)
+        let slope = h * 0.4
 
-    interface((-w / 2, -h), (w / 2, h), io: false)
-    line((-w / 2, -h), (w / 2, h), stroke: none, name: "bounds")
+        interface((-w / 2, -h), (w / 2, h), io: false)
+        line((-w / 2, -h), (w / 2, h), stroke: none, name: "bounds")
 
-    set-style(stroke: ctx.style.stroke)
+        set-style(stroke: ctx.style.stroke)
 
-    line((-w / 2, h - slope), (w / 2, h), (w/2, -h), (-w / 2, -h + slope), close: true, fill: style.fill)
-    
+        line((-w / 2, h - slope), (w / 2, h), (w / 2, -h), (-w / 2, -h + slope), close: true, fill: style.fill)
 
-    let spread = (outputs - 1) * spacing
-    for i in range(0, outputs) {
-      let y-pos = (spread / 2) - (i * spacing)
-      anchor("out" + str(i), (w / 2, y-pos))
+        let spread = (outputs - 1) * spacing
+        for i in range(0, outputs) {
+            let y-pos = (spread / 2) - (i * spacing)
+            anchor("out" + str(i), (w / 2, y-pos))
 
+            let bin-val = ""
+            let temp-i = i
+            for _ in range(bit-width) {
+                bin-val = str(calc.rem(temp-i, 2)) + bin-val
+                temp-i = calc.floor(temp-i / 2)
+            }
+            anchor("out" + bin-val, (w / 2, y-pos))
+            content((w / 2 - 0.4, y-pos), text(style.textsize, weight: "bold")[#bin-val])
+        }
 
-      let bin-val = ""
-      let temp-i = i
-      for _ in range(bit-width) {
-        bin-val = str(calc.rem(temp-i, 2)) + bin-val
-        temp-i = calc.floor(temp-i / 2)
-      }
-      anchor("out" + bin-val, (w / 2, y-pos))
-      content((w / 2 - 0.4, y-pos), text(style.textsize, weight: "bold")[#bin-val])
+        for i in range(0, bit-width) {
+            let x-pos = (w / 2) - (i + 1) * (w / (bit-width + 1))
+            let y-pos = if x-pos < -w / 2 { h - slope } else { (slope / w) * x-pos + (h - slope / 2) }
+
+            let s-idx = bit-width - 1 - i
+            anchor("sel" + str(s-idx), (x-pos, y-pos))
+            content((x-pos + 0.25, y-pos + 0.4), text(style.textsize * 0.8)[$S_#s-idx$])
+        }
+
+        anchor("in", (-w / 2, 0))
     }
-
-    for i in range(0, bit-width) {
-      let x-pos = (w / 2) - (i + 1) * (w / (bit-width + 1))
-      let y-pos = if x-pos < -w / 2 { h - slope } else { (slope / w) * x-pos + (h - slope / 2) }
-
-      let s-idx = bit-width - 1 - i
-      anchor("sel" + str(s-idx), (x-pos, y-pos))
-      content((x-pos + 0.25, y-pos + 0.4), text(style.textsize*0.8)[$S_#s-idx$])
-    }
-
-    anchor("in", (-w / 2, 0))
-  }
-  component("dmux", name, node, draw: draw, ..params)
+    component("dmux", name, node, draw: draw, ..params)
 }
 
 /// 2-to-1 Multiplexer.

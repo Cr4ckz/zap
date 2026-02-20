@@ -12,48 +12,46 @@
 /// - `d`: Drain (top right).
 /// - `s`: Source (bottom right).
 #let mosfet_simple(
-  name,
-  node,
-  channel: "n",
-  ..params,
+    name,
+    node,
+    channel: "n",
+    ..params,
 ) = {
- assert(channel in ("p", "n"), message: "channel must be `p` or `n`")
+    assert(channel in ("p", "n"), message: "channel must be `p` or `n`")
 
- let draw(ctx, position, style) = {
-  let(height, width, base-width, base-spacing, radius) = style
-  interface((-height, -width / 2), (0, width / 2))
+    let draw(ctx, position, style) = {
+        let (height, width, base-width, base-spacing, radius) = style
+        interface((-height, -width / 2), (0, width / 2))
 
-  let center = (-height / 2, 0)
+        let center = (-height / 2, 0)
 
-  anchor("d_int", (0, width / 2))
-  anchor("s_int", (0, -width / 2))
-  anchor("d", (rel:(0,0.3), to: "d_int"))
-  anchor("s", (rel:(0,-0.3), to: "s_int"))
+        anchor("d_int", (0, width / 2))
+        anchor("s_int", (0, -width / 2))
+        anchor("d", (rel: (0, 0.3), to: "d_int"))
+        anchor("s", (rel: (0, -0.3), to: "s_int"))
 
-  wire("d_int", "d")
-  wire("s_int", "s")
+        wire("d_int", "d")
+        wire("s_int", "s")
 
-  set-style(stroke: style.stroke)
+        set-style(stroke: style.stroke)
 
-  wire("d_int", (rel: (0, 0)), (rel: (-height, 0)))
-  wire("s_int", (rel: (0, 0)), (rel: (-height, 0)))
-  anchor("gl", (rel: (-3 * height / 4, width / 2), to: center))
-  
-  wire((rel: (0, -width / 2)), (rel: (-height / 2, 0)))
-  
-  anchor("g",(rel: (-height / 2, -width / 2)))
+        wire("d_int", (rel: (0, 0)), (rel: (-height, 0)))
+        wire("s_int", (rel: (0, 0)), (rel: (-height, 0)))
+        anchor("gl", (rel: (-3 * height / 4, width / 2), to: center))
 
-  wire("gl", (rel: (0, -width / 2)), (rel: (0, -width / 2)))
+        wire((rel: (0, -width / 2)), (rel: (-height / 2, 0)))
 
-  if channel == "p" {
-    circle((-height - 0.28, 0), radius: 0.1, fill: style.fill)
-  }
+        anchor("g", (rel: (-height / 2, -width / 2)))
 
-  wire((-height, width / 2), (-height, -width / 2))
-  
+        wire("gl", (rel: (0, -width / 2)), (rel: (0, -width / 2)))
 
- }
-  component("mosfet", name, node, draw: draw, ..params)
+        if channel == "p" {
+            circle((-height - 0.28, 0), radius: 0.1, fill: style.fill)
+        }
+
+        wire((-height, width / 2), (-height, -width / 2))
+    }
+    component("mosfet", name, node, draw: draw, ..params)
 }
 
 /// Simple P-channel MOSFET with inversion circle.

@@ -27,7 +27,7 @@
 #import "components/fuse.typ": afuse, fuse
 #import "components/supply.typ": earth, frame, ground, vcc, vee
 #import "components/inductor.typ": inductor
-#import "components/logic.typ": land, lnand, lnor, lnot, lor, lxnor, lxor, aand, anand, anor, anot, aor, axor, axnor, abuffer, alogic
+#import "components/logic.typ": aand, abuffer, alogic, anand, anor, anot, aor, axnor, axor, land, lnand, lnor, lnot, lor, lxnor, lxor
 #import "components/resistor.typ": heater, potentiometer, resistor, rheostat
 #import "components/source.typ": acvsource, disource, dvsource, isource, vsource
 #import "components/motor.typ": acmotor, dcmotor
@@ -41,12 +41,12 @@
 #import "components/integrated/flipflop.typ": dflipflop, flipflop, jkflipflop, srlatch
 
 //new
-#import "components/transistors/simple.typ": nmos_simple, pmos_simple, mosfet_simple
-#import "components/integrated/multiplexer.typ": mux, mux2, mux4, mux8, dmux, dmux2, dmux4, dmux8
-#import "components/integrated/decoder.typ": decoder, dec1to2, dec2to4, dec3to8
-#import "components/integrated/flipflop_top.typ": flipflop_top, dflipflop_top, dlatch_top, dff_enable, dff_reset, dff_enable_inv, dff_reset_inv
-#import "components/integrated/register.typ": register, reg2bit, reg3bit, reg4bit, reg5bit, reg6bit, reg7bit, reg8bit
+#import "components/transistors/simple.typ": mosfet_simple, nmos_simple, pmos_simple
+#import "components/integrated/multiplexer.typ": dmux, dmux2, dmux4, dmux8, mux, mux2, mux4, mux8
+#import "components/integrated/decoder.typ": dec1to2, dec2to4, dec3to8, decoder
+#import "components/integrated/flipflop_top.typ": dff_enable, dff_enable_inv, dff_reset, dff_reset_inv, dflipflop_top, dlatch_top, flipflop_top
+#import "components/integrated/register.typ": reg2bit, reg3bit, reg4bit, reg5bit, reg6bit, reg7bit, reg8bit, register
 #import "components/integrated/adder.typ": full_adder, half_adder
-#import "components/integrated/zero_extend.typ": zero_extend, sign_extend
+#import "components/integrated/zero_extend.typ": sign_extend, zero_extend
 #import "components/integrated/shifter.typ": shifter, shiftla, shiftll, shiftra, shiftrl
 
