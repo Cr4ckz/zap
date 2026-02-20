@@ -15,47 +15,51 @@
 /// - `rst`: Reset input (bottom center).
 /// - `s{n}_in`: Input pin for bit {n} (left side).
 /// - `s{n}_out`: Output pin for bit {n} (right side).
-#let register(name, node, bits: 2, ..params) = {
-    let draw(ctx, position, style) = {
-        let w = style.width * 0.8
-        // Höhe passt sich der Bit-Anzahl an
-        let h = style.height * (2.0 + bits * 0.6) 
-        let gap = style.spacing * 3
-        
-        interface((-w / 2, -h / 2), (w / 2, h / 2))
+#let register(name, node, bits: 2, rotate: 0deg, ..params) = {
+  let draw(ctx, position, style) = {
+    let w = style.width * 0.8
+    let h = style.height * (2.0 + bits * 0.6)
+    let gap = style.spacing * 3
 
-        // 1. Statische Anker (Takt & Reset)
-        anchor("clk", (0, h/2))
-        anchor("rst", (0, -h / 2))
-        
-        // 2. Gehäuse
-        rect((-w / 2, -h / 2), (w / 2, h / 2), fill: style.fill, stroke: style.stroke)
+    interface((-w / 2, -h / 2), (w / 2, h / 2))
 
-        for i in range(bits) {
-            let idx = bits - 1 - i
+    anchor("clk", (0, h / 2))
+    anchor("rst", (0, -h / 2))
 
-            let y_pos = (bits - 1) * gap / 2 - i * gap - 0.2
-            
+    rect((-w / 2, -h / 2), (w / 2, h / 2), fill: style.fill, stroke: style.stroke)
 
-            let in_name = "s" + str(idx) + "_in"
-            let out_name = "s" + str(idx) + "_out"
-            
-            anchor(in_name, (-w / 2, y_pos))
-            anchor(out_name, (w / 2, y_pos))
-            
-            content((-w / 2, y_pos), $S'_#idx$, anchor: "west", padding: style.padding)
-            content((w / 2, y_pos), $S_#idx$, anchor: "east", padding: style.padding)
-        }
+    let r-str = repr(rotate)
+    let s-map = (
+      "0deg": (west: "west", east: "east", north: "north", south: "south"),
+      "90deg": (west: "south", east: "north", north: "west", south: "east"),
+      "180deg": (west: "east", east: "west", north: "south", south: "north"),
+      "270deg": (west: "north", east: "south", north: "east", south: "west"),
+    ).at(r-str, default: (west: "west", east: "east", north: "north", south: "south"))
 
-        content((0, h / 2), [#cetz.canvas({ clock-wedge() })], anchor: "west", angle: -90deg)
-        content((0, h / 2 - 0.1), [CLK], anchor: "north", padding: style.padding)
-        
-        if "rst" != "" {
-            content((0, -h / 2), [Reset], anchor: "south", padding: style.padding)
-        }
+    let start_y = (bits - 1) * gap / 2
+    for i in range(bits) {
+      let idx = bits - 1 - i
+      let y_pos = start_y - i * gap
+
+      anchor("s" + str(idx) + "_in", (-w / 2, y_pos))
+      anchor("s" + str(idx) + "_out", (w / 2, y_pos))
+
+      content((-w / 2, y_pos), anchor: s-map.west, padding: style.padding, text(style.textsize * 0.9)[$S'_#idx$])
+      content((w / 2, y_pos), anchor: s-map.east, padding: style.padding, text(style.textsize * 0.9)[$S_#idx$])
     }
 
-    component("register", name, node, draw: draw, ..params)
+    cetz.draw.scope({
+      cetz.draw.translate((0, h / 2))
+      cetz.draw.rotate(-90deg)
+      clock-wedge()
+    })
+
+    content((0, h / 2), text(style.textsize * 0.7)[CLK], anchor: s-map.north, padding: style.padding * 2.5)
+
+    content((0, -h / 2), text(style.textsize * 0.7)[RESET], anchor: s-map.south, padding: style.padding)
+  }
+
+  component("register", name, node, draw: draw, rotate: rotate, ..params)
 }
 
 /// 2-bit version of the register component.

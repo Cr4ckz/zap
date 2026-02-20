@@ -249,8 +249,7 @@
 /// *Anchors:* same as `wire`
 #let zwire(..params) = wire(shape: "zigzag", ..params)
 
-/// Zigzag wire shortcut: Same as `wire` but with `shape: "zigzag"`.
-/// All other parameters are passed through.
+/// Creates an L-shaped or step-shaped wire by setting ratio to 100%
 /// - bits (int|string, optional):
 ///     - int: number of parallel lines (only drawn if > 1)
 ///     - string: label text displayed on the wire

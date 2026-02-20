@@ -411,6 +411,7 @@ Zap currently supports either `iec` (default) or `ieee` in the `variant` styling
 = Wiring <wiring>
 
 You can choose between squared, zigzag or straight wires using `swire`, `zwire` or `wire`.
+The bits parameter supports both integers and strings. Zap will automatically find a suitable segment for the marker.
 
 #circ(
     ```typst
@@ -422,6 +423,9 @@ You can choose between squared, zigzag or straight wires using `swire`, `zwire` 
         wire((0, 0), (1, 0))
         zwire((2, 0), (4, 2), stroke: blue)
         swire((5, 2), (6, -1), stroke: red)
+        //Multibit wiring
+        zwire((7, 0), (9, 2), bits: "N")
+        zwire((10, 0), (11, 2), bits: 2)
     })
     ```,
 )
@@ -1451,36 +1455,6 @@ The `shifter` block represents a hardware shifter, commonly used for bitwise ope
 )
 
 #info(title: "Anchors")[The shifter provides three main anchors: `in` (left), `amount` (top), and `out` (right).]
-
-== Data Extension <extension>
-
-The `zero_extend` component is used to illustrate the expansion of a data signal (e.g., from 16-bit to 32-bit) by padding it with leading zeros.
-
-#circ(
-    ```typst
-    #import "./zap.typ"
-    #zap.circuit({
-        import zap: *
-
-        zero_extend("ze1", (0, 0))
-
-    })
-    ```,
-)
-
-
-
-==== Options
-
-#table(
-    columns: (auto, auto, auto, auto),
-    align: left + top,
-    table.header([*Name*], [*Default value*], [*Alias*], [*Image*]),
-    `label`, `none`, [Adds a custom label, such as "Sign-Extend".],
-    html.frame(zap.circuit({ import zap: *; zero_extend("ze", (0,0), label: "SE") })),
-)
-
-#info[You can use the `label` parameter to turn this into a *Sign-Extend* block by simply passing `label: "Sign-Extend"` or `label: Sigma`.]
 
 == Data Extension <extension>
 

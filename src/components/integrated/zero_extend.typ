@@ -6,23 +6,18 @@
 /// - name (string): Unique identifier.
 /// - node (coordinate): Position in the CeTZ canvas.
 /// - label (string): The text shown inside the component (default: "ZE").
-/// - angle (angle): Rotation angle (default: 0deg).
 /// *Anchors:* `in`, `out`, `nw`, `ne`, `sw`, `se`.
-#let zero_extend(name, node, label: "ZE", angle: 0deg, ..params) = {
+#let zero_extend(name, node, label: "ZE", ..params) = {
   let draw(ctx, position, style) = {
-    let w = style.at("width", default: 1.2)
-    let h = style.at("height", default: 0.8)
+    let w = style.width
+    let h = style.height
 
     interface((-w/2, -h/2), (w/2, h/2), io: false)
-    
     set-style(stroke: ctx.style.stroke)
+    
+    rect((-w/2, -h/2), (w/2, h/2), fill: style.fill, name: "rect")
 
-    cetz.draw.rotate(angle)
-
-    rect((-w/2, -h/2), (w/2, h/2), fill: white, name: "rect")
-
-
-    content("rect", text(style.at("textsize", default: 0.7em), weight: "bold")[#label])
+    content("rect", text(style.textsize, weight: "bold")[#label])
 
     anchor("in",  (-w/2, 0))
     anchor("out", (w/2, 0))
@@ -39,5 +34,4 @@
 /// Sign-Extend component with rotation support.
 /// - name (string): Unique identifier.
 /// - node (coordinate): Position in the CeTZ canvas.
-/// - angle (angle): Rotation angle (default: 0deg).
-#let sign_extend(name, node, angle: 0deg, ..params) = zero_extend(name, node, label: "SE", angle: angle, ..params)
+#let sign_extend(name, node, ..params) = zero_extend(name, node, label: "SE", ..params)

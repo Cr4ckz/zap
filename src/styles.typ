@@ -393,6 +393,7 @@
     min-height: 2,
     padding: 0.2,
     spacing: 0.6,
+    textsize:1.2em,
   ),
   dmux: (
     variant: auto,
@@ -403,6 +404,7 @@
     min-height: 2,
     padding: 0.2,
     spacing: 0.6,
+    textsize:1.2em,
   ),
   decoder: (
     variant: auto,
@@ -413,6 +415,7 @@
     min-height: 2,
     padding: 0.2,
     spacing: 0.6,
+    textsize:1.3em,
   ),
   round-meter: (
     variant: auto,
@@ -461,8 +464,8 @@
     scale: auto,
     stroke: auto,
     fill: auto,
-    width: 1.1,
-    min-height: 1,
+    width: 1,
+    min-height: 0.7,
     padding: 0.2,
     invert-width: 0.3,
     invert-height: 0.2,
@@ -495,8 +498,9 @@
     fill: auto,
     width: 1.8,
     height: 2,
-    padding: 0.2,
+    padding: 0.1,
     spacing: 0.5,
+    textsize: 1.3em,
   ),
   adder: (
     variant: auto,

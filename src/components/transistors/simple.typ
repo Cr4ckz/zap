@@ -46,7 +46,7 @@
   wire("gl", (rel: (0, -width / 2)), (rel: (0, -width / 2)))
 
   if channel == "p" {
-    circle((-height - 0.28, 0), radius: 0.1, fill: white)
+    circle((-height - 0.28, 0), radius: 0.1, fill: style.fill)
   }
 
   wire((-height, width / 2), (-height, -width / 2))
@@ -56,14 +56,14 @@
   component("mosfet", name, node, draw: draw, ..params)
 }
 
-/// Simple N-channel MOSFET.
-/// - name (string): Unique identifier.
-/// - node (coordinate): Position.
-/// *Anchors:* `g` (Gate), `d` (Drain), `s` (Source)
-#let pmos_simple(name, node, ..params) = mosfet_simple(name, node, channel: "p", ..params)
-
 /// Simple P-channel MOSFET with inversion circle.
 /// - name (string): Unique identifier.
 /// - node (coordinate): Position.
 /// *Anchors:* `g` (Gate), `d` (Drain), `s` (Source).
+#let pmos_simple(name, node, ..params) = mosfet_simple(name, node, channel: "p", ..params)
+
+/// Simple N-channel MOSFET.
+/// - name (string): Unique identifier.
+/// - node (coordinate): Position.
+/// *Anchors:* `g` (Gate), `d` (Drain), `s` (Source)
 #let nmos_simple(name, node, ..params) = mosfet_simple(name, node, channel: "n", ..params)
